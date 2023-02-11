@@ -66,7 +66,7 @@ do_request() {
                   SignatureMethod=HMAC-SHA1
                   SignatureVersion=1.0
                   Timestamp=$(encode_url_component "$(date -u +"%Y-%m-%dT%H:%M:%SZ")")
-                  SignatureNonce=$(date +%s)" # use timestamp as random number
+                  SignatureNonce=$(head /dev/urandom | tr -dc '0123456789' | head -c16)"
 
     # build canonicalized query string, notice we use ascii order when sorting
     __CANONICALIZED_QUERY_STRING="$(printf -- '%s' "$__COMMON_PARAMS $*" | sed 's/\s\+/\n/g' | LC_COLLATE=C sort | xargs | sed 's/\s/\&/g')"
